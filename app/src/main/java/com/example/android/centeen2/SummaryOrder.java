@@ -27,7 +27,8 @@ public class SummaryOrder extends AppCompatActivity {
 
         egg.setText(b.getCharSequence("egg"));
         veg.setText(b.getCharSequence("veg"));
-
-        eggQty.setInputType(b.getInt("eggQty"));
-        vegQty.setInputType(b.getInt("vegQty"));
+if(b.getInt("eggQty")!=0)
+        eggQty.setText(b.getInt("eggQty")+"");
+        if(b.getInt("vegQty")!=0)
+        vegQty.setText(b.getInt("vegQty")+"");
     }}
