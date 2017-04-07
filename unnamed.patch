@@ -1,0 +1,653 @@
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(date 1491040420000)
++++ .idea/misc.xml	(date 1491558770000)
+@@ -37,7 +37,7 @@
+     <ConfirmationsSetting value="0" id="Add" />
+     <ConfirmationsSetting value="0" id="Remove" />
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+   <component name="ProjectType">
+\ No newline at end of file
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/vcs.xml	(date 1491558770000)
++++ .idea/vcs.xml	(date 1491558770000)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="$PROJECT_DIR$" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(date 1491040420000)
++++ app/src/main/AndroidManifest.xml	(date 1491558770000)
+@@ -17,7 +17,7 @@
+         </activity>
+         <activity
+             android:name=".SummaryOrder"
+-            android:label="Order Summary" >
++            android:label="OrderSummary" >
+         </activity>
+     </application>
+ 
+\ No newline at end of file
+Index: app/src/main/java/com/example/android/centeen2/FoodAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/android/centeen2/FoodAdapter.java	(date 1491558770000)
++++ app/src/main/java/com/example/android/centeen2/FoodAdapter.java	(date 1491558770000)
+@@ -0,0 +1,87 @@
++package com.example.android.centeen2;
++
++/**
++ * Created by Home on 4/3/2017.
++ */
++
++import android.app.Activity;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++import android.widget.ArrayAdapter;
++import android.widget.TextView;
++
++import java.util.ArrayList;
++
++/**
++ * Created by Home on 3/2/2017.
++ */
++
++
++public class FoodAdapter extends ArrayAdapter<Food> {
++
++    private static final String LOG_TAG = com.example.android.centeen2.FoodAdapter.class.getSimpleName();
++
++    /**
++     * This is our own custom constructor (it doesn't mirror a superclass constructor).
++     * The context is used to inflate the layout file, and the list is the data we want
++     * to populate into the lists.
++     *
++     * @param context        The current context. Used to inflate the layout file.
++     * @param foodie A List of AndroidFlavor objects to display in a list
++     */
++    public FoodAdapter(Activity context, ArrayList<Food> foodie) {
++        // Here, we initialize the ArrayAdapter's internal storage for the context and the list.
++        // the second argument is used when the ArrayAdapter is populating a single TextView.
++        // Because this is a custom adapter for two TextViews and an ImageView, the adapter is not
++        // going to use this second argument, so it can be any value. Here, we used 0.
++        super(context, 0, foodie);
++    }
++
++    /**
++     * Provides a view for an AdapterView (ListView, GridView, etc.)
++     *
++     * @param position The position in the list of data that should be displayed in the
++     *                 list item view.
++     * @param convertView The recycled view to populate.
++     * @param parent The parent ViewGroup that is used for inflation.
++     * @return The View for the position in the AdapterView.
++     */
++    @Override
++    public View getView(int position, View convertView, ViewGroup parent) {
++        // Check if the existing view is being reused, otherwise inflate the view
++        View listItemView = convertView;
++        if(listItemView == null) {
++            listItemView = LayoutInflater.from(getContext()).inflate(
++                    R.layout.ordersummary, parent, false);
++        }
++
++        // Get the {@link AndroidFlavor} object located at this position in the list
++        Food currentAndroidFlavor = getItem(position);
++
++        // Find the TextView in the list_item.xml layout with the ID version_name
++        TextView nameTextView = (TextView) listItemView.findViewById(R.id.os);
++        // Get the version name from the current AndroidFlavor object and
++        // set this text on the name TextView
++        nameTextView.setText(currentAndroidFlavor.getName());
++
++
++
++        // Find the TextView in the list_item.xml layout with the ID version_number
++       TextView numberTextView = (TextView) listItemView.findViewById(R.id.Qty);
++        // Get the version number from the current AndroidFlavor object and
++        // set this text on the number TextView
++        numberTextView.setText(currentAndroidFlavor.getCost()+"");
++
++        // Find the ImageView in the list_item.xml layout with the ID list_item_icon
++
++
++
++        // Return the whole list item layout (containing 2 TextViews and an ImageView)
++        // so that it can be shown in the ListView
++        return listItemView;
++    }
++
++}
++
++
+Index: app/src/main/java/com/example/android/centeen2/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/android/centeen2/MainActivity.java	(date 1491040420000)
++++ app/src/main/java/com/example/android/centeen2/MainActivity.java	(date 1491558770000)
+@@ -22,6 +22,7 @@
+ import android.widget.Button;
+ import android.widget.CheckBox;
+ import android.widget.TextView;
++import android.widget.Toast;
+ 
+ public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+ 
+@@ -34,16 +35,23 @@
+        Button button = (Button) findViewById(R.id.order);
+         button.setOnClickListener(this);
+     }
+-
++int price;
+     int quantityVeg=0;
+     public void incrementVeg(View view) {
+ 
+         quantityVeg=quantityVeg+1;
++
+         displayVeg(quantityVeg);
+     } /**
+      * This method is called when the minus button is clicked.*/
+     public void decrementVeg(View view) {
+         quantityVeg--;
++        if(quantityVeg<1)
++        {
++            Toast.makeText(getApplicationContext(), "Quantity cannot go below 1!",
++                    Toast.LENGTH_LONG).show();
++            quantityVeg=0;
++        }
+         displayVeg(quantityVeg);
+     }
+ 
+@@ -53,7 +61,7 @@
+     }
+ 
+ 
+-    
++
+ 
+     int quantityEgg=0;
+     public void incrementEgg(View view) {
+@@ -66,8 +74,13 @@
+ 
+         //    int numberOfCoffees=1;
+         quantityEgg--;
++        if(quantityEgg<1)
++        {
++            Toast.makeText(getApplicationContext(), "Quantity cannot go below 1!",
++                    Toast.LENGTH_LONG).show();
++            quantityEgg=0;
++        }
+ 
+-
+         displayEgg(quantityEgg);
+ 
+ 
+@@ -86,10 +99,6 @@
+     public void onClick(View v) {
+ 
+ 
+-        //...............................................................
+-
+-        //..............................................................
+-
+         Intent intent = new Intent(MainActivity.this, SummaryOrder.class);        //Create a bundle object
+         Bundle b = new Bundle();
+ 
+@@ -98,26 +107,53 @@
+ 
+         CheckBox checkBox = (CheckBox) findViewById(R.id.EFR);
+         boolean isEgg=checkBox.isChecked();
+-        if(isEgg==true) {
++      if(isEgg==true&&quantityEgg!=0) {
+             b.putString("egg", checkBox.getText().toString());
++          b.putInt("check1",1);
++
++
++
+-            b.putInt("eggQty",quantityEgg);
++          b.putInt("eggQty",quantityEgg);
+ 
+ 
+         }
+         CheckBox checkBox1 = (CheckBox) findViewById(R.id.VFR);
+         boolean isVeg=checkBox1.isChecked();
+-        if(isVeg==true) {
++       if(isVeg==true&&quantityVeg!=0) {
+ 
+ 
+             b.putString("veg", checkBox1.getText().toString());
++           b.putInt("check2",1);
++
+-            b.putInt("vegQty",quantityVeg);
++         b.putInt("vegQty",quantityVeg);
+ 
+-        }
++       }
++        if(isEgg==false && isVeg==false ) {
++            Toast.makeText(getApplicationContext(), "Choose an item!",
++                    Toast.LENGTH_LONG).show();
++        }
++        if(quantityVeg==0 && quantityEgg==0)
++        {
++            Toast.makeText(getApplicationContext(), "Quantity zero!",
++                    Toast.LENGTH_LONG).show();
++        }
++
++        if(isVeg==true)
++            price+=quantityVeg*30;
++        if(isEgg==true)
++            price+=quantityEgg*35;
++
++        b.putInt("price",price);
++
+-        //Add the bundle to the intent.
++            //Add the bundle to the intent.
++        //if((isEgg==true|| isVeg==true) &&(quantityVeg>0 || quantityEgg>0))
++        if((isEgg==true&&quantityEgg>0)||(isVeg==true && quantityVeg>0)){
+-        intent.putExtras(b);
++            intent.putExtras(b);
+ 
++
+-        //start the DisplayActivity
+-        startActivity(intent);
++            //start the DisplayActivity
++            startActivity(intent);
++        }
+ 
+ 
+ 
+@@ -127,3 +163,5 @@
+ 
+     }
+ 
++// checked value ,ill put into bundle and extract and put into another activity....ill extract checked boxes from the other activity and put into another listview
++// that ill inflate again
+Index: app/src/main/java/com/example/android/centeen2/SummaryOrder.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/android/centeen2/SummaryOrder.java	(date 1491040420000)
++++ app/src/main/java/com/example/android/centeen2/SummaryOrder.java	(date 1491558770000)
+@@ -2,8 +2,10 @@
+ 
+ import android.os.Bundle;
+ import android.support.v7.app.AppCompatActivity;
+-import android.widget.TextView;
++import android.widget.ListView;
+ 
++import java.util.ArrayList;
++
+ /**
+  * Created by Home on 3/31/2017.
+  */
+@@ -12,22 +14,47 @@
+ 
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+-        setContentView(R.layout.ordersummary);
++        setContentView(R.layout.summaryorder2);
+ 
+         Bundle b = getIntent().getExtras();
+-        TextView egg = (TextView) findViewById(R.id.EFRos);
+-        TextView veg = (TextView) findViewById(R.id.VFRos);
+-        TextView eggQty = (TextView) findViewById(R.id.EFRQty);
+-        TextView vegQty = (TextView) findViewById(R.id.VFRQty);
++      //TextView textView = (TextView) findViewById(R.id.TextviewAfterListview);
++      //  TextView veg = (TextView) findViewById(R.id.VFRos);
+ 
++       // TextView eggQty = (TextView) findViewById(R.id.EFRQty);
++       // TextView vegQty = (TextView) findViewById(R.id.VFRQty);
+ 
+ 
+ 
++       ArrayList<Food> foodie = new ArrayList<>();
+ 
++        if(b.getInt("check1")==1) {
++            foodie.add(new Food(b.getString("egg").toString(),b.getInt("eggQty")));
++        }
++        if(b.getInt("check2")==1)
++            foodie.add(new Food(b.getString("veg").toString(),b.getInt("vegQty")));
++       // egg.setText(b.getCharSequence("egg"));
++      // foodie.add(egg.getText().toString());
++      //
++        // veg.setText(b.getCharSequence("veg"));
++       //foodie.add(veg.getText().toString());
++        FoodAdapter ootaAdapter = new FoodAdapter(this, foodie);
+ 
+-        egg.setText(b.getCharSequence("egg"));
+-        veg.setText(b.getCharSequence("veg"));
++        // Get
++        // reference to the ListView, and attach the adapter to the listView.
++        ListView listView = (ListView) findViewById(R.id.list1);
+ 
+-        eggQty.setInputType(b.getInt("eggQty"));
+-        vegQty.setInputType(b.getInt("vegQty"));
++        listView.setAdapter(ootaAdapter);
++
++       // textView.setText(b.getInt("price")+"");
++
++        
++        /*
++
++if(b.getInt("eggQty")!=0)
++        eggQty.setText(b.getInt("eggQty")+"");
++        if(b.getInt("vegQty")!=0)
++        vegQty.setText(b.getInt("vegQty")+"");*/
+     }}
++
++
++// add listview and adapter here
+\ No newline at end of file
+Index: app/src/main/java/com/example/android/centeen2/food.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/android/centeen2/food.java	(date 1491558770000)
++++ app/src/main/java/com/example/android/centeen2/food.java	(date 1491558770000)
+@@ -0,0 +1,63 @@
++package com.example.android.centeen2;
++
++/**
++ * Created by Home on 4/3/2017.
++ */
++
++
++
++/**
++ * Created by Home on 4/1/2017.
++ */
++
++
++/**
++ * Created by Home on 3/2/2017.
++ */
++
++public class Food {
++    private String mName;
++
++    // Android version number (e.g. 2.3-2.7, 3.0-3.2.6, 4.0-4.0.4)
++    private int mCost;
++
++    // Drawable resource ID
++
++
++
++
++    /*
++    * Create a new AndroidFlavor object.
++    *
++    * @param vName is the name of the Android version (e.g. Gingerbread)
++    * @param vNumber is the corresponding Android version number (e.g. 2.3-2.7)
++    * @param image is drawable reference ID that corresponds to the Android version
++    * */
++    public Food(String vName, int vNumber)
++    {
++        mName = vName;
++       mCost = vNumber;
++
++
++    }
++
++    /**
++     * Get the name of the Android version
++     */
++    public String getName() {
++        return mName;
++    }
++
++    /**
++     * Get the Android version number
++     */
++    public int getCost() {
++       return mCost;
++    }
++
++    /**
++     * Get the image resource ID
++     */
++
++
++}
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_main.xml	(date 1491040420000)
++++ app/src/main/res/layout/activity_main.xml	(date 1491558770000)
+@@ -3,12 +3,15 @@
+ 
+ 
+ 
++
++
+ <ScrollView
+ xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:tools="http://schemas.android.com/tools"
+ tools:context="com.example.android.centeen2.MainActivity"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent">
++
+ <LinearLayout
+     android:id="@+id/activity_main"
+     android:layout_width="match_parent"
+@@ -26,15 +29,35 @@
+     android:layout_height="wrap_content"
+     android:orientation="horizontal">
+ 
++        <ImageView
++            android:id="@+id/list_item_icon"
++            android:layout_width="50dp"
++            android:layout_height="50dp"
++            android:src="@drawable/eggfried_rice"/>
++
++<RelativeLayout
++    android:layout_width="match_parent"
++    android:layout_height="wrap_content"
++    >
++
++
+         <CheckBox
+             android:id="@+id/EFR"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="Egg Fried Rice"
+ 
++
++
+             />
++        <TextView
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_below="@id/EFR"
++            android:text="Price : Rs 35"/>
++</RelativeLayout>
+         <Space
+-            android:layout_width="80dp"
++            android:layout_width="40dp"
+             android:layout_height="15dp"
+             />
+         <Button
+@@ -61,12 +84,26 @@
+             android:text="+" />
+         </LinearLayout>
+ 
+-
++<Space
++    android:layout_width="match_parent"
++    android:layout_height="20dp"
++    />
+         <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal">
+ 
++                <ImageView
++
++                    android:layout_width="50dp"
++                    android:layout_height="50dp"
++                    android:src="@drawable/vegfried"/>
++
++                <RelativeLayout
++                    android:layout_width="match_parent"
++                    android:layout_height="wrap_content">
++
++
+                 <CheckBox
+                     android:id="@+id/VFR"
+                     android:layout_width="wrap_content"
+@@ -74,8 +111,18 @@
+                     android:text="Veg Fried Rice"
+ 
+                     />
++
++                        <TextView
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:layout_below="@id/VFR"
++                            android:text="Price :Rs 35"/>
++
++
++                </RelativeLayout>
++
+                 <Space
+-                    android:layout_width="80dp"
++                    android:layout_width="40dp"
+                     android:layout_height="15dp"
+                     />
+                 <Button
+@@ -115,4 +162,5 @@
+ 
+ 
+ </LinearLayout>
++
+-</ScrollView>
+\ No newline at end of file
++</ScrollView>
+Index: app/src/main/res/layout/ordersummary.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/ordersummary.xml	(date 1491040420000)
++++ app/src/main/res/layout/ordersummary.xml	(date 1491558770000)
+@@ -10,19 +10,21 @@
+ 
+ 
+     <TextView
+-        android:id="@+id/EFRos"
++        android:id="@+id/os"
+ 
+         android:layout_height="wrap_content"
+         android:layout_width="wrap_content"
+         android:textSize="20dp"
++        android:text="asda"
+ 
+          />
+     <Space
+-    android:layout_width="200dp"
++    android:layout_width="100dp"
+     android:layout_height="15dp"
+     />
++
+     <TextView
+-        android:id="@+id/EFRQty"
++        android:id="@+id/Qty"
+ 
+         android:layout_height="wrap_content"
+         android:layout_width="wrap_content"
+@@ -30,35 +32,10 @@
+         android:text=""
+ 
+         />
+-    </LinearLayout>
+-<LinearLayout
+-    android:layout_width="wrap_content"
+-    android:layout_height="wrap_content"
+-    android:orientation="horizontal">
+ 
+ 
+-    <TextView
+-        android:id="@+id/VFRos"
+-        android:layout_height="wrap_content"
+-        android:layout_width="wrap_content"
+-        android:textSize="20dp"
++    </LinearLayout>
+ 
+ 
+-         />
+-    <Space
+-        android:layout_width="200dp"
+-        android:layout_height="15dp"
+-        />
+-    <TextView
+-        android:id="@+id/VFRQty"
+-        android:layout_height="wrap_content"
+-        android:layout_width="wrap_content"
+-        android:textSize="20dp"
+-        android:text=""
+-       >
+-
+-    </TextView>
+-
+-    </LinearLayout>
+ 
+-</LinearLayout>
+\ No newline at end of file
++</LinearLayout>
+Index: app/src/main/res/layout/summaryorder2.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/summaryorder2.xml	(date 1491558770000)
++++ app/src/main/res/layout/summaryorder2.xml	(date 1491558770000)
+@@ -0,0 +1,21 @@
++<?xml version="1.0" encoding="utf-8"?>
++
++<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_height="wrap_content"
++    android:layout_width="wrap_content">
++
++<ListView xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:id="@+id/list1"
++    android:orientation="vertical"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:paddingBottom="@dimen/activity_vertical_margin"
++    android:paddingLeft="@dimen/activity_horizontal_margin"
++    android:paddingRight="@dimen/activity_horizontal_margin"
++    android:paddingTop="@dimen/activity_vertical_margin"
++    tools:context="com.example.android.centeen2.MainActivity"
++    />
++
++</RelativeLayout>
+\ No newline at end of file
