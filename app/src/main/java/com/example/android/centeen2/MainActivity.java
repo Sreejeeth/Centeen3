@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -34,16 +35,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
        Button button = (Button) findViewById(R.id.order);
         button.setOnClickListener(this);
     }
-
+int price;
     int quantityVeg=0;
     public void incrementVeg(View view) {
 
         quantityVeg=quantityVeg+1;
+
         displayVeg(quantityVeg);
     } /**
      * This method is called when the minus button is clicked.*/
     public void decrementVeg(View view) {
         quantityVeg--;
+        if(quantityVeg<1)
+        {
+            Toast.makeText(getApplicationContext(), "Quantity cannot go below 1!",
+                    Toast.LENGTH_LONG).show();
+            quantityVeg=0;
+        }
         displayVeg(quantityVeg);
     }
 
@@ -53,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    
+
 
     int quantityEgg=0;
     public void incrementEgg(View view) {
@@ -66,7 +74,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //    int numberOfCoffees=1;
         quantityEgg--;
-
+        if(quantityEgg<1)
+        {
+            Toast.makeText(getApplicationContext(), "Quantity cannot go below 1!",
+                    Toast.LENGTH_LONG).show();
+            quantityEgg=0;
+        }
 
         displayEgg(quantityEgg);
 
@@ -86,10 +99,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
 
 
-        //...............................................................
-
-        //..............................................................
-
         Intent intent = new Intent(MainActivity.this, SummaryOrder.class);        //Create a bundle object
         Bundle b = new Bundle();
 
@@ -98,26 +107,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         CheckBox checkBox = (CheckBox) findViewById(R.id.EFR);
         boolean isEgg=checkBox.isChecked();
-        if(isEgg==true) {
+      if(isEgg==true&&quantityEgg!=0) {
             b.putString("egg", checkBox.getText().toString());
-            b.putInt("eggQty",quantityEgg);
+          b.putInt("check1",1);
+
+
+
+          b.putInt("eggQty",quantityEgg);
 
 
         }
         CheckBox checkBox1 = (CheckBox) findViewById(R.id.VFR);
         boolean isVeg=checkBox1.isChecked();
-        if(isVeg==true) {
+       if(isVeg==true&&quantityVeg!=0) {
 
 
             b.putString("veg", checkBox1.getText().toString());
-            b.putInt("vegQty",quantityVeg);
+           b.putInt("check2",1);
 
+         b.putInt("vegQty",quantityVeg);
+
+       }
+        if(isEgg==false && isVeg==false ) {
+            Toast.makeText(getApplicationContext(), "Choose an item!",
+                    Toast.LENGTH_LONG).show();
         }
-        //Add the bundle to the intent.
-        intent.putExtras(b);
+        if(quantityVeg==0 && quantityEgg==0)
+        {
+            Toast.makeText(getApplicationContext(), "Quantity zero!",
+                    Toast.LENGTH_LONG).show();
+        }
 
-        //start the DisplayActivity
-        startActivity(intent);
+        if(isVeg==true)
+            price+=quantityVeg*30;
+        if(isEgg==true)
+            price+=quantityEgg*35;
+
+        b.putInt("price",price);
+
+            //Add the bundle to the intent.
+        //if((isEgg==true|| isVeg==true) &&(quantityVeg>0 || quantityEgg>0))
+        if((isEgg==true&&quantityEgg>0)||(isVeg==true && quantityVeg>0)){
+            intent.putExtras(b);
+
+
+            //start the DisplayActivity
+            startActivity(intent);
+        }
 
 
 
@@ -127,3 +163,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+// checked value ,ill put into bundle and extract and put into another activity....ill extract checked boxes from the other activity and put into another listview
+// that ill inflate again

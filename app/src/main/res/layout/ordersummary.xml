@@ -10,19 +10,21 @@
 
 
     <TextView
-        android:id="@+id/EFRos"
+        android:id="@+id/os"
 
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:textSize="20dp"
+        android:text="asda"
 
          />
     <Space
-    android:layout_width="200dp"
+    android:layout_width="100dp"
     android:layout_height="15dp"
     />
+
     <TextView
-        android:id="@+id/EFRQty"
+        android:id="@+id/Qty"
 
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -30,35 +32,10 @@
         android:text=""
 
         />
-    </LinearLayout>
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
 
-
-    <TextView
-        android:id="@+id/VFRos"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:textSize="20dp"
-
-
-         />
-    <Space
-        android:layout_width="200dp"
-        android:layout_height="15dp"
-        />
-    <TextView
-        android:id="@+id/VFRQty"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:textSize="20dp"
-        android:text=""
-       >
-
-    </TextView>
 
     </LinearLayout>
+
+
 
 </LinearLayout>
