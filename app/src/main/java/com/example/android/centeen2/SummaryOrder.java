@@ -3,6 +3,7 @@ package com.example.android.centeen2;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -17,7 +18,7 @@ public class SummaryOrder extends AppCompatActivity {
         setContentView(R.layout.summaryorder2);
 
         Bundle b = getIntent().getExtras();
-      //TextView textView = (TextView) findViewById(R.id.TextviewAfterListview);
+        TextView textView = (TextView) findViewById(R.id.textviewafterlistview);
       //  TextView veg = (TextView) findViewById(R.id.VFRos);
 
        // TextView eggQty = (TextView) findViewById(R.id.EFRQty);
@@ -42,10 +43,11 @@ public class SummaryOrder extends AppCompatActivity {
         // Get
         // reference to the ListView, and attach the adapter to the listView.
         ListView listView = (ListView) findViewById(R.id.list1);
-
+        //listView.addFooterView(textView );
         listView.setAdapter(ootaAdapter);
 
-       // textView.setText(b.getInt("price")+"");
+
+        textView.setText(b.getInt("price") + "");
 
         
         /*

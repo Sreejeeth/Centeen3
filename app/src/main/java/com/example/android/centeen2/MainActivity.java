@@ -26,16 +26,21 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         // Set the content of the activity to use the activity_main.xml layout file
+
         setContentView(R.layout.activity_main);
        Button button = (Button) findViewById(R.id.order);
         button.setOnClickListener(this);
+
     }
-int price;
+
+    int price = 0;
     int quantityVeg=0;
     public void incrementVeg(View view) {
 
